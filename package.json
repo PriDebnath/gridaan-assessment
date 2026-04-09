@@ -1,0 +1,21 @@
+{
+  "name":  "gridaan-assessment",
+  "author": {
+    "name": "Pritam Debnath",
+    "email": "debnathpritam0802@gmail.com",
+    "url": "https://github.com/PriDebnath/portfolio-v2"
+  },
+  "private": true,
+  "scripts": {
+    "corepack:enable": "corepack enable",
+    "install:packages": "pnpm install",
+    "install:packages:lockfile": "pnpm install --frozen-lockfile",
+    "build:frontend": "pnpm --filter frontend build",
+    "dev:frontend": "pnpm --filter frontend dev",
+    "dev:backend": "cd backend && npm run dev",
+    "start:backend": "cd backend && npm start",
+    "clean:softer": "pnpm cache delete",
+    "clean:soft": "rm -rf frontend/node_modules backend/node_modules",
+    "clean:delete": "rmdir /s /q node_modules && del pnpm-lock.yaml && pnpm store prune"
+  }
+}

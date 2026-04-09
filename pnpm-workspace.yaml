@@ -1,0 +1,3 @@
+packages:
+  - frontend # should match the name in the project-name/package.json
+  - backend
