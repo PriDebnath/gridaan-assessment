@@ -10,7 +10,7 @@ function rootComponent() {
 
   return (
     <>
-      root
+      root 
     </>
   )
 }
