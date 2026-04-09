@@ -4,10 +4,9 @@ import { studentModel as model, Student as Type } from "../models";
 export const createOne = async (req: Request, res: Response) => {
   try {
     const body: Type = req.body;
-   const { name, student_class } = body
+    const { name, student_class } = body
     if (!name || !student_class) {
-      return res.status(400)
-      .json({ error: "Missing data" });
+      return res.status(400).json({ error: "Missing data" });
     }
 
     const newData = new model({
@@ -38,13 +37,10 @@ export const deleteOne = async (req: Request, res: Response) => {
     const { id } = req.params;
     const deleted = await model.findByIdAndDelete(id);
     if (!deleted) {
-      return res.status(404).json({ error: "Flow not found" });
+      return res.status(404).json({ error: "Not found" });
     }
 
-    res.status(200).json({
-      message: "Dleted successfully",
-      deleted,
-    });
+    res.status(200).json({ message: "Dleted successfully", deleted, });
   } catch {
     res.status(500).json({ error: "Delete failed" });
   }
