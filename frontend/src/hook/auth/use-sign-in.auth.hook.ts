@@ -3,9 +3,9 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useAuthStore } from "../../store/auth.store";
 
-type Param = { email: string; password: string }
+export type SignInParam = { email: string; password: string }
 
-const signIn = (data: Param) =>
+const signIn = (data: SignInParam) =>
   apiClient<{ token: string }>("/auth/login", {
     method: "POST",
     body: JSON.stringify(data),
@@ -22,6 +22,7 @@ export const useAuthSignIn = () => {
     },
   });
   return {
+    ...signInMutation,
     signIn: signInMutation.mutateAsync,
   };
 };

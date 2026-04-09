@@ -3,9 +3,9 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useAuthStore } from "../../store/auth.store";
 
-type Param = { email: string; password: string }
+export type SignUpParam = { email: string; password: string }
 
-const signUp = (data:Param ) => {
+const signUp = (data:SignUpParam ) => {
   const response =    apiClient<{ token: string }>("/api/auth/sign-up", {
     method: "POST",
     body: JSON.stringify(data),
@@ -24,6 +24,7 @@ export const useAuthSignUp = () => {
     },
   });
   return {
+    ...signUpMutation,
     signUp: signUpMutation.mutateAsync,
   };
 };

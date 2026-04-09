@@ -5,7 +5,7 @@ function rootComponent() {
   const navigate = useNavigate()
   const { token } = useAuthStore()
   if (!token) {
-    navigate({ to: "/auth/login" })
+    navigate({ to: "/auth/sign-in" })
   }
 
   return (
