@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { adminModel as model, Admin as Type } from "../models";
+import { JWT_SECRET } from "../utils";
 
 export const signUp = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -42,7 +43,6 @@ export const signIn = async (req: Request, res: Response) => {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
-    const JWT_SECRET: string = "pritam"
     const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1d" });
 
     res.json({ token });
