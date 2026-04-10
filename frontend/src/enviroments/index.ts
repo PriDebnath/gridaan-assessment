@@ -1,12 +1,18 @@
 
 
-let BASE_API_URL:string;
-if (import.meta.env.MODE === "github") {
-  BASE_API_URL = "https://gridaan-assessment-backend.onrender.com";
-} else {
-  BASE_API_URL = "http://localhost:8000";
+let BASE_API_URL: string;
+
+switch (import.meta.env.MODE) {
+  case "github":
+    // BASE_API_URL = "https://gridaan-assessment-backend.onrender.com";
+    BASE_API_URL = "http://localhost:8000";
+    break;
+
+  default:
+    BASE_API_URL = "http://localhost:8000";
+    break;
 }
 
-console.log({BASE_API_URL})
+console.log({ BASE_API_URL })
 
 export { BASE_API_URL };
