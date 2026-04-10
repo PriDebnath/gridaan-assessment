@@ -32,6 +32,38 @@ export const getAll = async (_req: Request, res: Response) => {
   }
 };
 
+export const updateOne = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const body: Partial<Type> = req.body;
+
+    const { name, student_class } = body;
+
+    // Optional: validate at least one field is provided
+    if (!name && !student_class) {
+      return res.status(400).json({ error: "No data to update" });
+    }
+
+    const updated = await model.findByIdAndUpdate(
+      id,
+      {
+        ...(name && { name }),
+        ...(student_class && { student_class }),
+        modified_at: Date.now(),
+      },
+      { new: true } // returns updated document
+    );
+
+    if (!updated) {
+      return res.status(404).json({ error: "Not found" });
+    }
+
+    res.status(200).json(updated);
+  } catch {
+    res.status(500).json({ error: "Update failed" });
+  }
+};
+
 export const deleteOne = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;

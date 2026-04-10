@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query"
 export type Param = {}
 
 export type Student = {
-    _id: string;
+    _id?: string;
     name: string;
     student_class: string;
 }
@@ -14,7 +14,7 @@ const getStudents = (data: Param) =>
         method: "GET",
     })
 
-export const useGetStudentsKey = "get-flows"
+export const useGetStudentsKey = "get"
 
 export const useGetStudents = () => {
     const data = useQuery({
