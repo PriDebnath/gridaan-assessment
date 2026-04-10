@@ -16,17 +16,30 @@ export async function apiClient<T>(
       ...options.headers,
     },
   });
+  console.log({ res,endpoint,BASE_API_URL });
 
   // 🔐 Handle auth errors globally
   if (res.status === 401) {
     setToken("");
     window.location.href = "/";
   }
-
-  if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.message || "API Error");
+  if (res.status === 404) {
+    setToken("");
+    throw new Error("Not found");
   }
 
-  return await res.json();
+  if (!res.ok) {
+    try {
+      const error = await res.json();
+      throw new Error(error.message || "API Error");
+
+    } catch (er: any) {
+      throw new Error(er?.message || "API Error");
+    }
+  }
+
+  const response = res.json()
+  console.log({ response, res });
+
+  return response;
 }

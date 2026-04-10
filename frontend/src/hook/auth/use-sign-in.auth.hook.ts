@@ -7,7 +7,7 @@ import { useAuthStore } from "../../store/auth.store";
 export type SignInParam = { email: string; password: string }
 
 const signIn = (data: SignInParam) =>
-  apiClient<{ token: string }>("/auth/login", {
+  apiClient<{ token: string }>("/api/auth/sign-in", {
     method: "POST",
     body: JSON.stringify(data),
   })
@@ -20,8 +20,11 @@ export const useAuthSignIn = () => {
     onSuccess: (data) => {
       setToken(data.token);
       navigate({ to: "/" });
+      toast.success("Sign up successful", {
+        position: "top-center"
+      })
     },
-    onError:(error )=>{
+    onError: (error) => {
       toast.error(error?.message ? error?.message : error?.stack, {
         position: "top-center"
       })

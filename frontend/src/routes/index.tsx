@@ -1,16 +1,28 @@
+import { useEffect } from 'react'
 import { useAuthStore } from '@/store/auth.store'
+import Dashboard from '@/page/dashboard/dashboard.page'
 import { createFileRoute, lazyRouteComponent, useNavigate } from '@tanstack/react-router'
+
+// const component = lazyRouteComponent(() => {
+//     return import('@/page/dashboard/dashboard.page').then(mod => ({ default: mod.default }))
+// })
 
 function rootComponent() {
   const navigate = useNavigate()
   const { token } = useAuthStore()
-  if (!token) {
-    navigate({ to: "/auth/sign-in" })
-  }
+  useEffect(() => {
+    if (!token) {
+      navigate({ to: "/auth/sign-in" })
+    }
+  }, [token, navigate])
 
+  if (!token) {
+    console.warn("No token found, visiting /auth/sign-in")
+    return null
+  }
   return (
     <>
-      root 
+      <Dashboard />
     </>
   )
 }

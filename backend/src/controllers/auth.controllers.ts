@@ -1,8 +1,8 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { JWT_SECRET } from "../utils";
 import { Request, Response } from "express";
 import { adminModel as model, Admin as Type } from "../models";
-import { JWT_SECRET } from "../utils";
 
 export const signUp = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -20,7 +20,7 @@ export const signUp = async (req: Request, res: Response) => {
 
     const newData = new model({
       email,
-      hashedPassword,
+      password: hashedPassword,
       created_at: Date.now(),
       modified_at: Date.now(),
     });
@@ -37,6 +37,7 @@ export const signIn = async (req: Request, res: Response) => {
 
   try {
     const user = await model.findOne({ email });
+console.log({user});
 
     if (!user || !user?.password) return res.status(400).json({ message: "User not found" });
 

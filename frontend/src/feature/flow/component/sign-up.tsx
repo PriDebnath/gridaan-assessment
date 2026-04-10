@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button"
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Eye, EyeOff, Loader, Loader2 } from "lucide-react"
-import { useAuthSignIn } from "@/hook/auth/use-sign-in.auth.hook"
+import { useAuthSignUp } from "@/hook/auth/use-sign-up.auth.hook"
 
 const formSchema = z.object({
   email: z.string().email("Invalid email"),
@@ -23,7 +23,7 @@ const formSchema = z.object({
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false)
-  const { signIn, isPending } = useAuthSignIn()
+  const { signUp, isPending } = useAuthSignUp()
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -34,7 +34,7 @@ function SignUp() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log({ values, form })
-    signIn(values)
+    signUp(values)
   }
 
   return (
