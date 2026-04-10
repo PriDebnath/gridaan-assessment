@@ -5,7 +5,7 @@ export async function apiClient<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const { token, setToken} = useAuthStore()
+  const { token, setToken } = useAuthStore()
   // const token = localStorattge.getItem("token");
 
   const res = await fetch(`${BASE_API_URL}${endpoint}`, {
