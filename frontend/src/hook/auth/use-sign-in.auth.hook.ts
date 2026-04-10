@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { apiClient } from "@/lib/apiClient";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
@@ -12,7 +13,7 @@ const signIn = (data: SignInParam) =>
   })
 
 export const useAuthSignIn = () => {
-  const { setToken } = useAuthStore();
+  const { setToken } = useAuthStore.getState();
   const navigate = useNavigate();
   const signInMutation = useMutation({
     mutationFn: signIn,
@@ -20,6 +21,11 @@ export const useAuthSignIn = () => {
       setToken(data.token);
       navigate({ to: "/" });
     },
+    onError:(error )=>{
+      toast.error(error?.message ? error?.message : error?.stack, {
+        position: "top-center"
+      })
+    }
   });
   return {
     ...signInMutation,
