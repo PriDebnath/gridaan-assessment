@@ -14,7 +14,7 @@ const getStudents = (data: Param) =>
         method: "GET",
     })
 
-export const useGetStudentsKey = "get"
+export const useGetStudentsKey = "get-student"
 
 export const useGetStudents = () => {
     const data = useQuery({

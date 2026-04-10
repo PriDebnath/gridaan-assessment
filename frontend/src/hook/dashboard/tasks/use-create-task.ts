@@ -1,0 +1,35 @@
+import { toast } from "sonner"
+import { apiClient } from "@/lib/apiClient"
+import { useGetTasksKey, type Task } from "./use-get-tasks"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+
+const createTask = (data: Task) =>
+    apiClient<Task[]>("/api/tasks/"  , {
+        method: "POST",
+        body: JSON.stringify(data)
+    })
+
+
+export const useCreateTasks = () => {
+    const queryClient = useQueryClient()
+    const mutation = useMutation({
+        mutationFn: createTask,
+        onSuccess: (data) => {
+            toast.success("Added successful", {
+                position: "top-center"
+            })
+            queryClient.invalidateQueries({
+                queryKey: [useGetTasksKey]
+            });
+        },
+        onError: (error) => {
+            toast.error(error?.message ? error?.message : error?.stack, {
+                position: "top-center"
+            })
+        }
+    })
+    return {
+        ...mutation,
+        createTask: mutation.mutateAsync
+    }
+}
