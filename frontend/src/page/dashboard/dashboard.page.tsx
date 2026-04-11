@@ -44,7 +44,7 @@ export default function Dashboard() {
     ];
 
     return (
-        <div className="min-h-screen overflow-hidden flex flex-col bg-gray-50 dark:bg-gray-950 transition-colors">
+        <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950 transition-colors">
             {/* Header */}
             <header className="flex justify-between items-center bg-gray-200 dark:bg-gray-900 p-3 sticky z-50 top-0 shadow-md dark:shadow-none border-b border-gray-300 dark:border-gray-800">
                 <h1 className="text-lg font-semibold">

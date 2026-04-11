@@ -15,6 +15,8 @@ import { PenIcon, Trash2Icon } from "lucide-react";
 import type { Task, TaskCreate } from "@/hook/dashboard/tasks/use-get-tasks";
 import { useDeleteTasks } from "@/hook/dashboard/tasks/use-delete-task";
 import type { Student } from "@/hook/dashboard/students/use-get-students";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useUpdateTasks } from "@/hook/dashboard/tasks/use-update-task";
 
 interface Props {
     loading: boolean;
@@ -23,15 +25,16 @@ interface Props {
 }
 
 function Component(props: Props) {
-    const { list, loading,student  } = props
+    const { list, loading, student } = props
     const [search, setSearch] = useState("");
     const [openForm, setOpenForm] = useState(false)
+    const { updateTask, isPending: isUpdaing } = useUpdateTasks()
     const { deleteTask, isPending } = useDeleteTasks()
     const [editData, setEditData] = useState<TaskCreate | undefined>(undefined);
 
     const filteredList = useMemo(() => {
         return list
-            .filter((tx) => tx.title.toLowerCase().includes(search.toLowerCase()));
+            .filter((tx) => tx.title?.toLowerCase().includes(search.toLowerCase()));
     }, [search, list])
 
     const handleAdd = () => {
@@ -42,6 +45,14 @@ function Component(props: Props) {
     const handleEdit = (data: TaskCreate) => {
         setEditData(data)
         setOpenForm(true)
+    }
+
+    const handleUpdate = (data: Task) => {
+        updateTask({
+            _id: data._id,
+            completed: data.completed
+        })
+
     }
 
     const handleDelete = async (data: Task) => {
@@ -78,6 +89,7 @@ function Component(props: Props) {
                             <tr>
                                 <th className="p-2">Title</th>
                                 <th className="p-2">Student Name</th>
+                                <th className="p-2">Task Status</th>
                                 <th className="p-2">Action</th>
                             </tr>
                         </thead>
@@ -90,16 +102,19 @@ function Component(props: Props) {
                                     <td className="p-2  ">
                                         <div className="mx-4 bg-muted-foreground h-2 rounded animate-pulse"></div>
                                     </td>
+                                    <td className="p-2  ">
+                                        <div className="mx-4 bg-muted-foreground h-2 rounded animate-pulse"></div>
+                                    </td>
                                     <td className="p-2">
                                         <div className="mx-4 bg-muted-foreground h-2 rounded animate-pulse"></div>
                                     </td>
                                 </tr>
                             )}
                             {(!loading && filteredList.length === 0) ? (
-                                <tr key={"tx"} className="text-center border-t">
-                                    <td className="p-2"></td>
-                                    <td className="p-2"> No data found.</td>
-                                    <td className="p-2"></td>
+                                <tr key={"tx"} className=" border-t">
+                                    <td className="p-4 text-center align-middle" colSpan={4}>
+                                        No data found.
+                                    </td>
                                 </tr>
                             ) : (
                                 filteredList.map((pri) => {
@@ -107,23 +122,39 @@ function Component(props: Props) {
                                         <tr key={"tx" + pri._id} className="text-center border-t">
                                             <td className="p-2">{pri.title}</td>
                                             <td className="p-2">{pri.student?.name}</td>
-                                            <td className="p-2 flex justify-center items-center gap-2">
-                                                <Button
-                                                    variant="outline"
-                                                    onClick={() => handleEdit(
-                                                        {
-                                                            ...pri, 
-                                                        student: pri.student?._id
-                                                    })}
-                                                >
-                                                    <PenIcon />
-                                                </Button>
-                                                <Button
-                                                    variant={'outline'}
-                                                    className="text-red-500"
-                                                    onClick={() => handleDelete(pri)}
-                                                ><Trash2Icon />
-                                                </Button>
+                                            <td className="p-2">
+                                                <div className="flex justify-center items-center">
+                                                    <Checkbox checked={pri.completed}
+                                                        onCheckedChange={() => {
+                                                            handleUpdate(
+                                                                {
+                                                                    ...pri,
+                                                                    completed: !pri.completed
+                                                                },
+                                                            )
+                                                        }} />
+                                                </div>
+                                            </td>
+                                            <td className="p-2">
+                                                <div className="flex justify-center items-center gap-2">
+
+                                                    <Button
+                                                        variant="outline"
+                                                        onClick={() => handleEdit(
+                                                            {
+                                                                ...pri,
+                                                                student: pri.student?._id
+                                                            })}
+                                                    >
+                                                        <PenIcon />
+                                                    </Button>
+                                                    <Button
+                                                        variant={'outline'}
+                                                        className="text-red-500"
+                                                        onClick={() => handleDelete(pri)}
+                                                    ><Trash2Icon />
+                                                    </Button>
+                                                </div>
                                             </td>
                                         </tr>
                                     )

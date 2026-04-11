@@ -6,8 +6,8 @@ export type Param = {}
 
 export type Task = {
     _id?: string;
-    title: string;
-    completed: boolean;
+    title?: string;
+    completed?: boolean;
     student?: Student ;
 }
 

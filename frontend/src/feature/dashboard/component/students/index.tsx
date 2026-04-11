@@ -94,10 +94,10 @@ function Component(props: Props) {
                                 </tr>
                             )}
                             {(!loading && filteredList.length === 0) ? (
-                                <tr key={"tx"} className="text-center border-t">
-                                    <td className="p-2"></td>
-                                    <td className="p-2"> No data found.</td>
-                                    <td className="p-2"></td>
+                                <tr key={"tx"} className=" border-t">
+                                    <td className="p-4 text-center align-middle" colSpan={4}>
+                                        No data found.
+                                    </td>
                                 </tr>
                             ) : (
                                 filteredList.map((pri) => {
