@@ -33,7 +33,6 @@ function SignIn() {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log({ values, form })
     signIn(values)
   }
 
@@ -63,7 +62,7 @@ function SignIn() {
                 {...field}
                 id={field.name}
                 aria-invalid={fieldState.invalid}
-                placeholder="debnathpritam0802@gmail.com"
+                placeholder="Enter email here..."
                 autoComplete="on"
               />
               {fieldState.invalid && (
@@ -87,7 +86,7 @@ function SignIn() {
                   {...field}
                   id={field.name}
                   aria-invalid={fieldState.invalid}
-                  placeholder="password"
+                  placeholder="Enter password here..."
                   autoComplete="on"
                   type={showPassword ? "text" : "password"}
                   className="pr-10"

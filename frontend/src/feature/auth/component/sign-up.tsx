@@ -63,7 +63,7 @@ function SignUp() {
                 {...field}
                 id={field.name}
                 aria-invalid={fieldState.invalid}
-                placeholder="debnathpritam0802@gmail.com"
+                placeholder="Enter email here..."
                 autoComplete="on"
               />
               {fieldState.invalid && (
@@ -87,7 +87,7 @@ function SignUp() {
                   {...field}
                   id={field.name}
                   aria-invalid={fieldState.invalid}
-                  placeholder="password"
+                  placeholder="Enter password here..."
                   autoComplete="on"
                   type={showPassword ? "text" : "password"}
                   className="pr-10"

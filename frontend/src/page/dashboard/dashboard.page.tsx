@@ -2,11 +2,16 @@ import React, { lazy, Suspense } from "react";
 import { Loader } from "@/components/ui/loader";
 import { useGetTasks } from "@/hook/dashboard/tasks/use-get-tasks";
 import { useGetStudents } from "@/hook/dashboard/students/use-get-students";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Settings } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/store/auth.store";
 
-const StudentComponent = lazy( () => import('@/feature/dashboard/component/students')   .then(mod => ({ default: mod.default })))
+const StudentComponent = lazy(() => import('@/feature/dashboard/component/students').then(mod => ({ default: mod.default })))
 const TaskComponent = lazy(() => import('@/feature/dashboard/component/tasks').then(mod => ({ default: mod.default })))
 
 export default function Dashboard() {
+    const { setToken } = useAuthStore()
     const { isPending: loadingTask, data: tasks } = useGetTasks()
     const { isPending: loadingStudent, data: students } = useGetStudents()
 
@@ -28,11 +33,11 @@ export default function Dashboard() {
                 </>
             ),
         },
-                {
+        {
             title: "Task",
             content: (
                 <>
-                    <TaskComponent loading={loadingTask} list={tasks ? tasks : []}   student={students ? students : []} />
+                    <TaskComponent loading={loadingTask} list={tasks ? tasks : []} student={students ? students : []} />
                 </>
             ),
         },
@@ -45,6 +50,16 @@ export default function Dashboard() {
                 <h1 className="text-lg font-semibold">
                     School Management Mini System
                 </h1>
+                <DropdownMenu>
+                    <DropdownMenuTrigger render={<Button variant="outline"><Settings /></Button>}>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        <DropdownMenuGroup>
+                            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                            <DropdownMenuItem onClick={() => setToken('')}>Logout</DropdownMenuItem>
+                        </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                </DropdownMenu>
             </header>
 
             {/* Content */}

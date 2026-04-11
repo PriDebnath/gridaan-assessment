@@ -16,7 +16,6 @@ export async function apiClient<T>(
       ...options.headers,
     },
   });
-  console.log({ res,endpoint,BASE_API_URL });
 
   // 🔐 Handle auth errors globally
   if (res.status === 401) {
@@ -39,7 +38,6 @@ export async function apiClient<T>(
   }
 
   const response = res.json()
-  console.log({ response, res });
 
   return response;
 }

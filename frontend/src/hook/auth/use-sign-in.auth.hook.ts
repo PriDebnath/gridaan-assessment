@@ -16,18 +16,28 @@ export const useAuthSignIn = () => {
   const { setToken } = useAuthStore.getState();
   const navigate = useNavigate();
   const signInMutation = useMutation({
-    mutationFn: signIn,
+    mutationFn: async (data: SignInParam) => {
+      const promise = signIn(data);
+      toast.promise(promise, {
+        loading: "Signing in...",
+        success: "Sign In successful",
+        error: (err: any) => err?.message || "Something went wrong",
+        position: "top-center"
+      });
+      const res = await promise;
+      return res
+    },
     onSuccess: (data) => {
       setToken(data.token);
       navigate({ to: "/" });
-      toast.success("Sign up successful", {
-        position: "top-center"
-      })
+      // toast.success("Sign up successful", {
+      //   position: "top-center"
+      // })
     },
     onError: (error) => {
-      toast.error(error?.message ? error?.message : error?.stack, {
-        position: "top-center"
-      })
+      // toast.error(error?.message ? error?.message : error?.stack, {
+      //   position: "top-center"
+      // })
     }
   });
   return {

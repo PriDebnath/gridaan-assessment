@@ -30,9 +30,7 @@ export const createOne = async (req: Request, res: Response) => {
 
 export const getAll = async (_req: Request, res: Response) => {
   try {
-    const all = await model.find().populate("student");
-    console.log({all});
-    
+    const all = await model.find().populate("student");    
     res.status(200).json(all);
   } catch {
     res.status(500).json({ error: "Get failed" });

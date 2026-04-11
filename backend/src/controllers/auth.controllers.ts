@@ -37,8 +37,6 @@ export const signIn = async (req: Request, res: Response) => {
 
   try {
     const user = await model.findOne({ email });
-console.log({user});
-
     if (!user || !user?.password) return res.status(400).json({ message: "User not found" });
 
     const isMatch = await bcrypt.compare(password, user.password);
