@@ -41,7 +41,7 @@ function SignUp() {
     <div
       className={
         cn(
-          "p-6 shadow-sm bg-background overflow-hidden rounded-b-2xl border",
+          "p-6  bg-background overflow-hidden rounded-b-2xl border",
           (
             (form?.formState?.isDirty || form?.formState?.isSubmitted)
             && !form.formState.isValid

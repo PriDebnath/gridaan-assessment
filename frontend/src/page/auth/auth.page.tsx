@@ -34,21 +34,21 @@ function AuthLayout() {
         <Tabs
           value={isSignIn ? authPath.signin : authPath.signup}
           onValueChange={handleTabChange}
-          className="w-full border"
+          className="w-full border-0"
         >
-          <TabsList className="grid w-full grid-cols-2  p-0 ">
+          <TabsList className="grid w-full grid-cols-2 border-0 p-0 ">
             <TabsTrigger value="sign-in" className={'rounded-none border-none'}>Sign In</TabsTrigger>
             <TabsTrigger value="sign-up" className={'rounded-none border-none'}>Sign Up</TabsTrigger>
           </TabsList>
         </Tabs>
 
-        <div className="relative  bg-muted ">
+        <div className="relative  bg-muted border-0">
           <motion.div
             key={currentPath}
             initial={{ x: isSignIn ? -100 : 100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: isSignIn ? 100 : -100, opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.5, }}
           >
             <Outlet />
           </motion.div>
