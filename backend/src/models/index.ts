@@ -29,7 +29,7 @@ export type Student = InferSchemaType<typeof studentSchema>;
 
 export const taskSchema = new Schema({
   title: { type: String, required: true },
-  studentId: { type: mongoose.Schema.Types.ObjectId, ref: studentModel.modelName},
+  student: { type: mongoose.Schema.Types.ObjectId, ref: studentModel.modelName},
   completed: { type: Boolean, default: false }
 }, { timestamps: true });
 

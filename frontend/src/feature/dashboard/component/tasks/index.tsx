@@ -12,24 +12,26 @@ import { Input } from "@/components/ui/input";
 import React, { useMemo, useState } from "react"
 import { Button } from "@/components/ui/button";
 import { PenIcon, Trash2Icon } from "lucide-react";
+import type { Task, TaskCreate } from "@/hook/dashboard/tasks/use-get-tasks";
+import { useDeleteTasks } from "@/hook/dashboard/tasks/use-delete-task";
 import type { Student } from "@/hook/dashboard/students/use-get-students";
-import { useDeleteStudents } from "@/hook/dashboard/students/use-delete-student";
 
 interface Props {
     loading: boolean;
-    list: Student[];
+    list: Task[];
+    student: Student[];
 }
 
 function Component(props: Props) {
-    const { list, loading } = props
+    const { list, loading,student  } = props
     const [search, setSearch] = useState("");
     const [openForm, setOpenForm] = useState(false)
-    const { deleteStudent, isPending } = useDeleteStudents()
-    const [editData, setEditData] = useState<Student | undefined>(undefined);
+    const { deleteTask, isPending } = useDeleteTasks()
+    const [editData, setEditData] = useState<TaskCreate | undefined>(undefined);
 
     const filteredList = useMemo(() => {
         return list
-            .filter((tx) => tx.name.toLowerCase().includes(search.toLowerCase()));
+            .filter((tx) => tx.title.toLowerCase().includes(search.toLowerCase()));
     }, [search, list])
 
     const handleAdd = () => {
@@ -37,13 +39,13 @@ function Component(props: Props) {
         setOpenForm(true)
     }
 
-    const handleEdit = (data: Student) => {
+    const handleEdit = (data: TaskCreate) => {
         setEditData(data)
         setOpenForm(true)
     }
 
-    const handleDelete = async (data: Student) => {
-        await deleteStudent(data)
+    const handleDelete = async (data: Task) => {
+        await deleteTask(data)
     }
 
     return (
@@ -62,7 +64,7 @@ function Component(props: Props) {
                     <Button
                         onClick={() => handleAdd()}
                     >
-                        Add {"Student"}
+                        Add {"Task"}
                     </Button>
                 </div>
 
@@ -74,8 +76,8 @@ function Component(props: Props) {
                     <table className="w-full text-sm">
                         <thead className="bg-gray-100 dark:bg-gray-700">
                             <tr>
-                                <th className="p-2">Name</th>
-                                <th className="p-2">Class</th>
+                                <th className="p-2">Title</th>
+                                <th className="p-2">Student Name</th>
                                 <th className="p-2">Action</th>
                             </tr>
                         </thead>
@@ -103,12 +105,16 @@ function Component(props: Props) {
                                 filteredList.map((pri) => {
                                     return (
                                         <tr key={"tx" + pri._id} className="text-center border-t">
-                                            <td className="p-2">{pri.name}</td>
-                                            <td className="p-2">{pri.student_class}</td>
+                                            <td className="p-2">{pri.title}</td>
+                                            <td className="p-2">{pri.student?.name}</td>
                                             <td className="p-2 flex justify-center items-center gap-2">
                                                 <Button
                                                     variant="outline"
-                                                    onClick={() => handleEdit(pri)}
+                                                    onClick={() => handleEdit(
+                                                        {
+                                                            ...pri, 
+                                                        student: pri.student?._id
+                                                    })}
                                                 >
                                                     <PenIcon />
                                                 </Button>
@@ -135,6 +141,7 @@ function Component(props: Props) {
             <AddEdit
                 key={editData?._id ?? "new"} //
                 data={editData}
+                student={student}
                 open={openForm}
                 setOpen={setOpenForm}
             />

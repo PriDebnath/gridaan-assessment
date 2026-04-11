@@ -1,15 +1,14 @@
 import React, { lazy, Suspense } from "react";
 import { Loader } from "@/components/ui/loader";
+import { useGetTasks } from "@/hook/dashboard/tasks/use-get-tasks";
 import { useGetStudents } from "@/hook/dashboard/students/use-get-students";
 
-const StudentComponent = lazy(
-    () => import('@/feature/dashboard/component/students')
-        .then(mod => ({ default: mod.default }))
-)
-
+const StudentComponent = lazy( () => import('@/feature/dashboard/component/students')   .then(mod => ({ default: mod.default })))
+const TaskComponent = lazy(() => import('@/feature/dashboard/component/tasks').then(mod => ({ default: mod.default })))
 
 export default function Dashboard() {
-  const {isPending,data: students}  = useGetStudents()
+    const { isPending: loadingTask, data: tasks } = useGetTasks()
+    const { isPending: loadingStudent, data: students } = useGetStudents()
 
     // Shared section styling with dark mode support
     const sectionClass = `
@@ -25,7 +24,15 @@ export default function Dashboard() {
             title: "Student",
             content: (
                 <>
-                    <StudentComponent list={students ? students : []} />
+                    <StudentComponent loading={loadingStudent} list={students ? students : []} />
+                </>
+            ),
+        },
+                {
+            title: "Task",
+            content: (
+                <>
+                    <TaskComponent loading={loadingTask} list={tasks ? tasks : []}   student={students ? students : []} />
                 </>
             ),
         },
@@ -34,10 +41,11 @@ export default function Dashboard() {
     return (
         <div className="min-h-screen overflow-hidden flex flex-col bg-gray-50 dark:bg-gray-950 transition-colors">
             {/* Header */}
-            {/* <header className="flex justify-between items-center bg-gray-200 dark:bg-gray-900 p-3 sticky z-50 top-0 shadow-md dark:shadow-none border-b border-gray-300 dark:border-gray-800">
-                <h1 className="text-lg font-semibold">Finance Dashboard</h1>
-                <Setting />
-            </header> */}
+            <header className="flex justify-between items-center bg-gray-200 dark:bg-gray-900 p-3 sticky z-50 top-0 shadow-md dark:shadow-none border-b border-gray-300 dark:border-gray-800">
+                <h1 className="text-lg font-semibold">
+                    School Management Mini System
+                </h1>
+            </header>
 
             {/* Content */}
             <main className="p-4 flex flex-col gap-8">
@@ -46,8 +54,8 @@ export default function Dashboard() {
                         <h2 className="text-xl font-semibold tracking-tight">
                             {section.title}
                         </h2>
-                        <Suspense fallback={<Loader />}>            {section.content}
-
+                        <Suspense fallback={<Loader />}>
+                            {section.content}
                         </Suspense>
                     </section>
                 ))}

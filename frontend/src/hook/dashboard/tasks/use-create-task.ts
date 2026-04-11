@@ -1,10 +1,10 @@
 import { toast } from "sonner"
 import { apiClient } from "@/lib/apiClient"
-import { useGetTasksKey, type Task } from "./use-get-tasks"
+import { useGetTasksKey, type TaskCreate } from "./use-get-tasks"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
-const createTask = (data: Task) =>
-    apiClient<Task[]>("/api/tasks/"  , {
+const createTask = (data: TaskCreate) =>
+    apiClient<TaskCreate[]>("/api/tasks/"  , {
         method: "POST",
         body: JSON.stringify(data)
     })
