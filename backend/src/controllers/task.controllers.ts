@@ -51,7 +51,7 @@ export const updateOne = async (req: Request, res: Response) => {
         ...(completed !== undefined && { completed }),
         ...(student !== undefined && { student }),
       },
-      { new: true }
+      {returnDocument: "after" }
     ).populate("student");
 
     if (!updated) {

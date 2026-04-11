@@ -2,28 +2,44 @@
 
 ### 🔴 🖼️ Screenshot
 
- 
+<a href="https://pridebnath.github.io/gridaan-assessment">
+<img height="480" src="frontend/public/gridaan-assessment-by-pritam-debnath.png" />
+</a>
 
 
 ### 🔴 🎥 Video
 
- 
+https://github.com/user-attachments/assets/92bee06f-802d-4be4-90b3-9d84773cc928
 
-⬇️ <a href=" ">
+
+⬇️ <a href="frontend/public/gridaan-assessment-by-pritam-debnath.mp4" download="gridaan-assessment-by-pritam-debnath.mp4">
   Download Demo Video
 </a>
 
 
 
 ### 🔴 ↗️ Link
- 
+https://pridebnath.github.io/gridaan-assessment
+
 
 ---
- 
+
+# School Management Mini System (MERN Stack)
+
+A full-stack web application designed to manage basic school operations such as student records and task assignments, with secure admin authentication.
+
 ---
 
 ## 📌 Overview
- 
+
+This project demonstrates the implementation of a full-stack CRUD system with authentication and relational data handling.
+
+The application allows an admin to:
+
+- Manage student records (add, edit, delete, view)
+- Assign and track tasks/homework for students
+- Authenticate securely before accessing the dashboard
+
 ---
 
 ## 🧱 Tech Stack
@@ -31,8 +47,9 @@
 ### Frontend
 
 * React (Vite)
-* TanStack Query (Async state management)
- 
+* Shadcn UI
+* TanStack Query 
+
 ### Backend
 
 * Node.js
@@ -42,12 +59,37 @@
 
 * MongoDB (Mongoose)
 
- 
-
+## Authentication
+- JWT (JSON Web Tokens)
+- bcrypt (for password hashing)
 ---
 
 ## ⚙️ Features
- 
+
+### Authentication
+- Admin login system
+- Protected dashboard routes
+- Secure password handling using hashing
+
+### Student Management
+- ➕ Add new students
+- ✏️ Edit student details
+- ❌ Delete students
+- 📋 View all students
+
+### Task / Assignment Management
+- Assign tasks/homework to students
+- Mark tasks as completed
+- View all assigned tasks
+
+### Dashboard
+- Centralized admin panel after login
+- Displays:
+  - Student list
+  - Task/assignment list
+- Data Persistence
+  - All data stored in MongoDB
+  - RESTful APIs for frontend-backend communication
 
 ---
 
@@ -99,7 +141,6 @@ npm run dev
 ### Environment variables
 ```
 PORT=8000
- 
-```
- 
 
+MONGO_URI=connection-string-from-db-provider
+```

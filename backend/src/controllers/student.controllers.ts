@@ -51,7 +51,7 @@ export const updateOne = async (req: Request, res: Response) => {
         ...(student_class && { student_class }),
         modified_at: Date.now(),
       },
-      { new: true } // returns updated document
+      {returnDocument: "after" } // returns updated document
     );
 
     if (!updated) {
