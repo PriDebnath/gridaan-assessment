@@ -3,6 +3,7 @@ import { apiClient } from "@/lib/apiClient";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useAuthStore } from "../../store/auth.store";
+import { toastConfig } from "@/components/ui/sonner";
 
 export type SignUpParam = { email: string; password: string };
 
@@ -20,10 +21,10 @@ export const useAuthSignUp = () => {
     mutationFn: async (data: SignUpParam) => {
       const promise = signUp(data);
       toast.promise(promise, {
+        ...toastConfig,
         loading: "Signing up...",
         success: "Sign up successful",
         error: (err: any) => err?.message || "Something went wrong",
-        position: "top-center"
       });
       const res = await promise;
       return res
@@ -34,7 +35,7 @@ export const useAuthSignUp = () => {
     },
     onError: (error) => {
       // toast.error(error?.message ? error?.message : error?.stack, {
-      //   position: "top-center"
+      // position: toastConfig.position
       // })
     }
   });

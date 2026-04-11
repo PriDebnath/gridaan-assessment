@@ -33,7 +33,6 @@ function SignUp() {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log({ values, form })
     signUp(values)
   }
 

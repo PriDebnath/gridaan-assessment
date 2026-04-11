@@ -1,43 +1,72 @@
+import { toast } from "sonner";
 import { BASE_API_URL } from "@/enviroments";
 import { useAuthStore } from "@/store/auth.store";
+import { toastConfig } from "@/components/ui/sonner";
 
 export async function apiClient<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const { token, setToken } = useAuthStore.getState()
-  // const token = localStorattge.getItem("token");
+  const { token, setToken } = useAuthStore.getState();
 
-  const res = await fetch(`${BASE_API_URL}${endpoint}`, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...(token && { Authorization: `Bearer ${token}` }),
-      ...options.headers,
-    },
-  });
+  let toastId: string | number | undefined;
+  let timeout: ReturnType<typeof setTimeout>;
 
-  // 🔐 Handle auth errors globally
-  if (res.status === 401) {
-    setToken("");
-    window.location.href = "/";
-  }
-  if (res.status === 404) {
-    setToken("");
-    throw new Error("Not found");
-  }
+  //  Trigger toast only if request is slow
+  timeout = setTimeout(() => {
+    const message = "Taking longer than expected...\nHold tight (15–50 sec)..."
+    toastId = toast.loading(message,toastConfig);
+  }, 3000); 
 
-  if (!res.ok) {
-    try {
-      const error = await res.json();
-      throw new Error(error.message || "API Error");
+  try {
+    const res = await fetch(`${BASE_API_URL}${endpoint}`, {
+      ...options,
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+        ...options.headers,
+      },
+    });
 
-    } catch (er: any) {
-      throw new Error(er?.message || "API Error");
+    // Clear slow-toast trigger
+    clearTimeout(timeout);
+
+    // 🔐 Handle auth errors
+    if (res.status === 401) {
+      setToken("");
+      window.location.href = "/";
     }
+
+    if (res.status === 404) {
+      throw new Error("Not found");
+    }
+
+    if (!res.ok) {
+      let message = "API Error";
+      try {
+        const error = await res.json();
+        message = error.message || message;
+      } catch { }
+
+      throw new Error(message);
+    }
+
+    const data = await res.json();
+
+    // ✅ If toast was shown, convert it to success
+    if (toastId) {
+      toast.dismiss(toastId);
+    }
+
+    return data;
+  } catch (err: any) {
+    clearTimeout(timeout);
+
+    // ❌ If toast was shown, update to error
+    if (toastId) {
+      toast.dismiss(toastId);
+    }
+
+    throw err;
   }
-
-  const response = res.json()
-
-  return response;
 }

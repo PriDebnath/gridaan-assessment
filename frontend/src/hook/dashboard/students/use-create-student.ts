@@ -2,6 +2,7 @@ import { toast } from "sonner"
 import { apiClient } from "@/lib/apiClient"
 import { useGetStudentsKey, type Student } from "./use-get-students"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { toastConfig } from "@/components/ui/sonner"
 
 const createStudent = (data: Student) =>
     apiClient<Student[]>("/api/students/", {
@@ -15,17 +16,17 @@ export const useCreateStudents = () => {
         mutationFn: async (data: Student) => {
             const promise = createStudent(data);
             toast.promise(promise, {
+                ...toastConfig,
                 loading: "Creating...",
                 success: "Created",
                 error: (err: any) => err?.message || "Something went wrong",
-                position: "top-center"
             });
             const res = await promise;
             return res
         },
         onSuccess: (data) => {
             // toast.success("Added successful", {
-            //     position: "top-center"
+            // position: toastConfig.position
             // })
             queryClient.invalidateQueries({
                 queryKey: [useGetStudentsKey]
@@ -33,7 +34,7 @@ export const useCreateStudents = () => {
         },
         onError: (error) => {
             // toast.error(error?.message ? error?.message : error?.stack, {
-            //     position: "top-center"
+            // position: toastConfig.position
             // })
         }
     })
